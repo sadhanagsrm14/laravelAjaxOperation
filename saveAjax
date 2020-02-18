@@ -1,3 +1,5 @@
+
+//View page code
 <script type="text/javascript">
 $(function() {
 
@@ -76,3 +78,19 @@ printError("failmsg", "Feeback not send successfully");
 });
 });  
 </script> 
+
+
+
+
+// Controller Code
+public function vendor_feedback_save(Request $request){
+        $data = request()->all();
+        $check = Feedback::insert($data);
+        if($check){ 
+            $arr = array('msg' => 'Successfully', 'status' => true);
+        }else{
+          $arr = array('msg' => 'Failed ', 'status' => false);  
+        }
+        return Response()->json($arr);
+        
+    }

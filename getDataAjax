@@ -1,0 +1,43 @@
+ //View page code
+ 
+ <script type="text/javascript">
+ $('#state').on('change',function(){
+   var stateID = $(this).val(); 
+   if(stateID){
+       $.ajax({
+          type:"GET",
+          url:"{{url('getcitylist')}}/"+stateID,
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success:function(res){               
+           if(res){
+               $("#city").empty();
+               $("#city").append('<option value="">--City--</option>');
+               $.each(res,function(key,value){
+                   $("#city").append('<option value="'+value+'">'+key+'</option>');
+               });
+          
+           }else{
+              $("#city").empty();
+              $("#city").append('<option value="">--City--</option>');
+           }
+          }
+       });
+   }else{
+       $("#city").empty();
+       $("#city").append('<option value="">--City--</option>');
+   }
+       
+  });
+  </script>
+  
+  
+  //controller page code
+  //Get City List based on State
+    public function getcitylist($id){
+        $cities= DB::table('districts')->where('state_id',$id )->pluck('id','city');
+        return response()->json($cities);
+    }
+  
+  
